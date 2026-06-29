@@ -100,7 +100,10 @@ Respond in this exact JSON format with no markdown, no backticks, just raw JSON:
         model: 'claude-sonnet-4-6',
         max_tokens: 2048,
         system: systemPrompt,
-        messages: [{ role: 'user', content: userMessage }],
+        messages: [
+          { role: 'user', content: userMessage },
+          { role: 'assistant', content: '{' },
+        ],
       }),
     });
 
@@ -111,32 +114,21 @@ Respond in this exact JSON format with no markdown, no backticks, just raw JSON:
     }
 
     const data = await response.json();
-    const content = data.content[0]?.text;
+    const completion = data.content[0]?.text;
 
-    if (!content) {
+    if (!completion) {
       return res.status(502).json({ error: 'Empty response from analysis service.' });
     }
 
-    // Strip markdown code fences if present (```json ... ``` or ``` ... ```)
-    const stripped = content.replace(/^```(?:json)?\s*/i, '').replace(/\s*```\s*$/, '').trim();
+    // Prepend the prefill character we used to force JSON output
+    const content = '{' + completion;
 
     let parsed;
     try {
-      parsed = JSON.parse(stripped);
-    } catch {
-      // Last resort: extract the outermost JSON object
-      const match = stripped.match(/\{[\s\S]*\}/);
-      if (match) {
-        try {
-          parsed = JSON.parse(match[0]);
-        } catch (e) {
-          console.error('JSON parse failed. Raw content:', content);
-          return res.status(502).json({ error: 'Could not parse analysis response. Please try again.', _debug_raw: content.slice(0, 500) });
-        }
-      } else {
-        console.error('No JSON object found. Raw content:', content);
-        return res.status(502).json({ error: 'Unexpected response format. Please try again.', _debug_raw: content.slice(0, 500) });
-      }
+      parsed = JSON.parse(content);
+    } catch (e) {
+      console.error('JSON parse failed. Raw content:', content);
+      return res.status(502).json({ error: 'Could not parse analysis response. Please try again.', _debug_raw: content.slice(0, 500) });
     }
 
     return res.status(200).json(parsed);
