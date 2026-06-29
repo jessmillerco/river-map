@@ -1,0 +1,13 @@
+{
+  "name": "river-map",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  }
+}
