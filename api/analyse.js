@@ -89,7 +89,7 @@ Respond in raw JSON only (no markdown, no backticks):
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
-        max_tokens: 1000,
+        max_tokens: 3000,
         system: systemPrompt,
         messages: [
           { role: 'user', content: userMessage },
@@ -105,9 +105,14 @@ Respond in raw JSON only (no markdown, no backticks):
 
     const data = await response.json();
     const completion = data.content[0]?.text;
+    const stopReason = data.stop_reason;
 
     if (!completion) {
       return res.status(502).json({ error: 'Empty response from analysis service.' });
+    }
+
+    if (stopReason === 'max_tokens') {
+      return res.status(502).json({ error: 'The analysis was too long to complete. Please try again — it usually works on a second attempt.' });
     }
 
     // Extract JSON object — find first { and last } to handle any wrapping
