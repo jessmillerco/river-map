@@ -5,6 +5,8 @@
     }
   },
   "rewrites": [
-    { "source": "/((?!api/).*)", "destination": "/index.html" }
+    { "source": "/workbook", "destination": "/river-map-workbook.html" },
+    { "source": "/api/analyse", "destination": "/api/analyse.js" },
+    { "source": "/", "destination": "/index.html" }
   ]
 }

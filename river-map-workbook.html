@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The River Map — Workbook</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bone: #EBE0D1;
+  --olive: #323D27;
+  --cosmos: #461420;
+  --moss: #7D774F;
+  --gold: #DAAD44;
+  --coral: #E87580;
+  --blue: #7293C5;
+  --champagne: #E6C3AC;
+  --cream: #FDFAF7;
+  --border: #D2C8BB;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bone);
+  color: var(--olive);
+  min-height: 100vh;
+  padding: 0;
+}
+
+@media print {
+  body { background: white; }
+  .no-print { display: none; }
+  .page-break { page-break-before: always; }
+}
+
+.cover {
+  background: var(--olive);
+  padding: 4rem 3rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cover::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(218,173,68,0.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 50%, rgba(114,147,197,0.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.cover-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--moss);
+  margin-bottom: 1.5rem;
+}
+
+.cover-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 52px;
+  font-weight: 300;
+  color: var(--bone);
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+}
+
+.cover-title em { font-style: italic; color: var(--gold); }
+
+.cover-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--champagne);
+  margin-bottom: 2.5rem;
+  line-height: 1.5;
+}
+
+.cover-divider {
+  width: 60px;
+  height: 1px;
+  background: var(--gold);
+  margin: 0 auto 2rem;
+}
+
+.cover-name-field {
+  margin-top: 1rem;
+  display: inline-block;
+  border-bottom: 1px solid var(--moss);
+  padding: 0.5rem 0;
+  min-width: 280px;
+  text-align: left;
+}
+
+.cover-name-label {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--moss);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.cover-name-input {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  color: var(--bone);
+  background: none;
+  border: none;
+  outline: none;
+  width: 100%;
+  font-style: italic;
+}
+
+.cover-name-input::placeholder { color: rgba(235,224,209,0.3); }
+
+.main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+.section-header { margin-bottom: 2rem; }
+
+.section-number {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--moss);
+  margin-bottom: 0.4rem;
+}
+
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--cosmos);
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+.section-desc {
+  font-size: 13px;
+  color: var(--moss);
+  line-height: 1.7;
+  max-width: 600px;
+}
+
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 2.5rem 0;
+}
+
+.card {
+  background: var(--cream);
+  border-radius: 12px;
+  border: 0.5px solid var(--border);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.card-label {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+}
+
+.card-label.cosmos { color: var(--cosmos); }
+.card-label.moss { color: var(--moss); }
+.card-label.blue { color: var(--blue); }
+.card-label.gold { color: #9a7a1e; }
+
+.card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 19px;
+  font-weight: 500;
+  margin-bottom: 0.875rem;
+  line-height: 1.2;
+}
+
+.card-title.cosmos { color: var(--cosmos); }
+.card-title.moss { color: var(--moss); }
+.card-title.blue { color: var(--blue); }
+.card-title.olive { color: var(--olive); }
+
+.prompts {
+  margin-bottom: 0.875rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.prompt {
+  font-size: 13px;
+  color: var(--moss);
+  line-height: 1.6;
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--champagne);
+}
+
+textarea {
+  width: 100%;
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  padding: 0.75rem 0.875rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  color: var(--olive);
+  background: white;
+  resize: vertical;
+  min-height: 90px;
+  line-height: 1.7;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+textarea:focus { border-color: var(--moss); }
+textarea::placeholder { color: #C4B8A8; font-style: italic; }
+
+/* THREE COLUMN RIVER LAYOUT */
+.river-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0;
+  margin-bottom: 1rem;
+  align-items: stretch;
+}
+
+.river-bank {
+  border-radius: 12px;
+  border: 0.5px solid var(--border);
+  padding: 1.25rem;
+  background: var(--cream);
+}
+
+.stones-column {
+  background: white;
+  border: 0.5px solid var(--blue);
+  border-radius: 12px;
+  padding: 1rem;
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 0.75rem;
+}
+
+.stones-column-label {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--blue);
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+}
+
+.stones-column-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 19px;
+  font-weight: 500;
+  color: var(--blue);
+  margin-bottom: 0.875rem;
+  line-height: 1.2;
+}
+
+.stones-column-prompt {
+  font-size: 13px;
+  color: var(--moss);
+  line-height: 1.6;
+  margin-bottom: 0.875rem;
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--champagne);
+}
+
+.stone-item {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.stone-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--bone);
+  border: 1px solid var(--blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--blue);
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+.stone-input {
+  flex: 1;
+  border: 0.5px solid var(--border);
+  border-radius: 6px;
+  padding: 0.5rem 0.625rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  color: var(--olive);
+  background: var(--bone);
+  outline: none;
+  transition: border-color 0.15s;
+  resize: vertical;
+  min-height: 48px;
+  line-height: 1.5;
+}
+
+.stone-input:focus { border-color: var(--blue); background: white; }
+.stone-input::placeholder { color: #C4B8A8; font-style: italic; font-size: 13px; }
+
+.add-stone-btn {
+  background: none;
+  border: 0.5px dashed var(--blue);
+  border-radius: 6px;
+  padding: 0.4rem 0.75rem;
+  font-size: 11px;
+  color: var(--blue);
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  transition: all 0.15s;
+  font-family: 'DM Sans', sans-serif;
+  margin-top: 0.25rem;
+}
+
+.add-stone-btn:hover { background: rgba(114,147,197,0.06); }
+
+@media (max-width: 700px) {
+  .river-grid { grid-template-columns: 1fr; }
+  .stones-column { min-width: unset; margin: 0.75rem 0; }
+}
+
+/* OFFER CARD */
+.offer-card {
+  background: var(--olive);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.offer-label {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--moss);
+  margin-bottom: 0.3rem;
+}
+
+.offer-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 19px;
+  font-weight: 400;
+  color: var(--bone);
+  margin-bottom: 0.875rem;
+}
+
+.offer-textarea {
+  background: rgba(235,224,209,0.08) !important;
+  border-color: rgba(235,224,209,0.2) !important;
+  color: var(--bone) !important;
+}
+
+.offer-textarea::placeholder { color: rgba(235,224,209,0.3) !important; }
+.offer-textarea:focus { border-color: var(--gold) !important; }
+
+/* TRANSITION BANNER */
+.transition-banner {
+  background: var(--olive);
+  border-radius: 10px;
+  padding: 0.875rem 1.25rem;
+  margin: 1rem 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.transition-arrow { color: var(--gold); font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+
+.transition-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  font-style: italic;
+  color: var(--champagne);
+  line-height: 1.5;
+}
+
+/* SEQUENTIAL FUNNEL LAYOUT */
+.funnel-section {
+  margin-bottom: 0;
+}
+
+.stone-block {
+  border-left: 2px solid var(--blue);
+  padding-left: 1.25rem;
+  margin-bottom: 0;
+  position: relative;
+}
+
+.stone-block::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--blue);
+  position: absolute;
+  left: -6px;
+  top: 1.5rem;
+}
+
+.stone-block-inner {
+  background: var(--cream);
+  border-radius: 12px;
+  border: 0.5px solid var(--border);
+  padding: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.stone-block-label {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 0.25rem;
+}
+
+.stone-block-belief {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--olive);
+  margin-bottom: 0.875rem;
+  line-height: 1.3;
+}
+
+.email-block {
+  background: white;
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  padding: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.email-block-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--moss);
+  margin-bottom: 0.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.email-tag {
+  background: var(--olive);
+  color: var(--champagne);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12px;
+  padding: 1px 8px;
+  border-radius: 4px;
+}
+
+.email-block textarea {
+  min-height: 60px;
+  font-size: 13px;
+}
+
+.add-email-to-stone {
+  background: none;
+  border: 0.5px dashed var(--border);
+  border-radius: 6px;
+  padding: 0.4rem 0.75rem;
+  font-size: 11px;
+  color: var(--moss);
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  transition: all 0.15s;
+  font-family: 'DM Sans', sans-serif;
+  margin-top: 0.25rem;
+}
+
+.add-email-to-stone:hover { border-color: var(--moss); background: rgba(125,119,79,0.04); }
+
+.stone-transition {
+  background: rgba(70,20,32,0.04);
+  border: 0.5px solid rgba(70,20,32,0.12);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin: 0.75rem 0 1.25rem 0;
+}
+
+.stone-transition-label {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cosmos);
+  margin-bottom: 0.4rem;
+}
+
+.stone-transition textarea {
+  min-height: 54px;
+  font-size: 13px;
+  background: white;
+}
+
+.stone-connector {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  margin-bottom: 0;
+}
+
+.connector-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.connector-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--blue);
+  flex-shrink: 0;
+}
+
+/* TWO COL */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 600px) {
+  .two-col { grid-template-columns: 1fr; }
+  .cover-title { font-size: 36px; }
+}
+
+.signpost-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+@media (max-width: 600px) { .signpost-row { grid-template-columns: 1fr; } }
+
+.signpost-card {
+  background: white;
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  padding: 0.875rem;
+}
+
+.signpost-num {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--champagne);
+  background: var(--olive);
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.conversion-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+@media (max-width: 600px) { .conversion-grid { grid-template-columns: 1fr; } }
+
+.field-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--moss);
+  margin-bottom: 0.4rem;
+  display: block;
+}
+
+.legend {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  background: white;
+  border-radius: 8px;
+  border: 0.5px solid var(--border);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 12px;
+  color: var(--olive);
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legend-dot.belief { background: var(--cosmos); }
+.legend-dot.identity { background: var(--blue); }
+.legend-dot.belonging { background: var(--moss); }
+
+.job-pills { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-top: 0.4rem; }
+.job-pill { display: none; }
+
+.job-pill + label {
+  font-size: 11px;
+  padding: 2px 9px;
+  border-radius: 20px;
+  border: 0.5px solid var(--border);
+  color: var(--moss);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.job-pill.belief:checked + label { background: var(--cosmos); border-color: var(--cosmos); color: white; }
+.job-pill.identity:checked + label { background: var(--blue); border-color: var(--blue); color: white; }
+.job-pill.belonging:checked + label { background: var(--moss); border-color: var(--moss); color: white; }
+
+/* SUBMIT */
+.submit-section {
+  background: var(--olive);
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.submit-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--bone);
+  margin-bottom: 0.5rem;
+}
+
+.submit-desc {
+  font-size: 13px;
+  color: var(--champagne);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  opacity: 0.85;
+}
+
+.submit-btn {
+  background: var(--gold);
+  color: var(--olive);
+  border: none;
+  border-radius: 8px;
+  padding: 0.875rem 2rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.submit-btn:hover { opacity: 0.9; }
+
+.print-btn {
+  background: none;
+  border: 0.5px solid var(--champagne);
+  color: var(--champagne);
+  border-radius: 8px;
+  padding: 0.875rem 2rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 0.75rem;
+  transition: all 0.15s;
+}
+
+.print-btn:hover { background: rgba(235,224,209,0.1); }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <p class="cover-eyebrow">Regenerative Revenue — Retreat Workbook</p>
+  <h1 class="cover-title">The River <em>Map</em></h1>
+  <p class="cover-subtitle">From belief journey to funnel architecture</p>
+  <div class="cover-divider"></div>
+  <div class="cover-name-field">
+    <span class="cover-name-label">Your name</span>
+    <input type="text" class="cover-name-input" placeholder="Write your name here">
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- SESSION ONE -->
+  <div class="section-header" style="margin-top: 1rem;">
+    <p class="section-number">Session One</p>
+    <h2 class="section-title">The River Crossing</h2>
+    <p class="section-desc">Map the belief journey your cold connection needs to take — from where they are right now, to becoming a client.</p>
+  </div>
+
+  <div class="offer-card">
+    <p class="offer-label">The offer promise</p>
+    <p class="offer-title">What do you deliver — and for whom?</p>
+    <textarea class="offer-textarea" placeholder="Who is this for? What do they walk away with? What specifically changes — in 1-2 sentences. Be concrete. No lofty language."></textarea>
+  </div>
+
+  <div class="river-grid">
+    <div class="river-bank">
+      <p class="card-label cosmos">The current bank</p>
+      <p class="card-title cosmos">Your cold connection, right now</p>
+      <div class="prompts">
+        <p class="prompt">What do they believe?</p>
+        <p class="prompt">How do they see themselves?</p>
+        <p class="prompt">What is their core problem?</p>
+        <p class="prompt">How does this show up in their daily experience?</p>
+      </div>
+      <textarea style="min-height: 200px;" placeholder="Name the belief, the fear, the Monday morning feeling. Stay on this bank — speak from inside their experience, not from the other side."></textarea>
+    </div>
+
+    <div class="stones-column">
+      <p class="stones-column-label">The belief journey</p>
+      <p class="stones-column-title">Stepping stones</p>
+      <p class="stones-column-prompt">What does your person need to believe to move from one side to the other?</p>
+      <div id="stones-container"></div>
+      <button class="add-stone-btn" onclick="addStone()">+ Add stone</button>
+    </div>
+
+    <div class="river-bank">
+      <p class="card-label blue">The other bank</p>
+      <p class="card-title blue">After working with you</p>
+      <div class="prompts">
+        <p class="prompt">What do they believe?</p>
+        <p class="prompt">How do they see themselves?</p>
+        <p class="prompt">What do they have now?</p>
+        <p class="prompt">What looks different in their daily experience?</p>
+      </div>
+      <textarea style="min-height: 200px;" placeholder="Ground this in the direct result of your offer — not an 18-month vision. What is specifically true after working with you?"></textarea>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SESSION TWO -->
+  <div class="section-header">
+    <p class="section-number">Session Two</p>
+    <h2 class="section-title">The funnel architecture</h2>
+    <p class="section-desc">This is where the stones from the river become your conversion pathway.</p>
+  </div>
+
+  <!-- SIGNPOSTS -->
+  <div class="card" style="margin-bottom: 0.75rem;">
+    <p class="card-label cosmos">Signposts</p>
+    <p class="card-title olive">Attraction content</p>
+    <div class="prompts">
+      <p class="prompt">Their job is to get your ideal client to the river crossing.</p>
+    </div>
+    <div class="signpost-row">
+      <div class="signpost-card">
+        <span class="signpost-num">Content 1</span>
+        <textarea style="min-height: 80px;" placeholder="Content idea, angle, or hook"></textarea>
+      </div>
+      <div class="signpost-card">
+        <span class="signpost-num">Content 2</span>
+        <textarea style="min-height: 80px;" placeholder="Content idea, angle, or hook"></textarea>
+      </div>
+      <div class="signpost-card">
+        <span class="signpost-num">Content 3</span>
+        <textarea style="min-height: 80px;" placeholder="Content idea, angle, or hook"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="transition-banner" style="margin: 0.75rem 0;">
+    <span class="transition-arrow">→</span>
+    <p class="transition-text">What question is your cold person left with after encountering your signpost content — the question that makes them raise their hand?</p>
+  </div>
+  <div class="card" style="margin-bottom: 1.25rem;">
+    <textarea style="min-height: 60px;" placeholder="e.g. I know something needs to change — but can someone like me actually do this?"></textarea>
+  </div>
+
+  <!-- FIRST STONE -->
+  <div class="card" style="margin-bottom: 0.75rem;">
+    <p class="card-label moss">First stone</p>
+    <p class="card-title olive">The lead magnet or opt-in offer</p>
+    <div class="prompts">
+      <p class="prompt">Solves their first obvious problem, shifts a core domino belief, and/or exposes a gap. This helps the right person raise their hand and the wrong person self-select out.</p>
+    </div>
+    <div class="two-col" style="margin-bottom: 0.75rem;">
+      <div>
+        <span class="field-label">Name / title of opt-in</span>
+        <textarea style="min-height: 70px;" placeholder="Specific enough that the wrong person wouldn't want it"></textarea>
+      </div>
+      <div>
+        <span class="field-label">Format</span>
+        <textarea style="min-height: 70px;" placeholder="PDF / video series / quiz / podcast / workshop"></textarea>
+      </div>
+    </div>
+    <span class="field-label">The domino belief this shifts</span>
+    <textarea style="min-height: 60px;" placeholder="Which stone from your river map does this lay?"></textarea>
+  </div>
+
+  <div class="transition-banner" style="margin: 0.75rem 0;">
+    <span class="transition-arrow">→</span>
+    <p class="transition-text">What question is your person left with after the opt-in — the question you need to answer first in your email sequence?</p>
+  </div>
+  <div class="card" style="margin-bottom: 1.25rem;">
+    <textarea style="min-height: 60px;" placeholder="e.g. I know this is possible for someone like me — but what would I even offer?"></textarea>
+  </div>
+
+  <!-- EMAIL SEQUENCE — SEQUENTIAL STONE BY STONE -->
+  <div style="margin-bottom: 0.75rem;">
+    <p class="card-label blue" style="margin-bottom: 0.3rem;">The crossing</p>
+    <p class="card-title olive" style="font-family:'Cormorant Garamond',serif; font-size:22px; color:var(--olive); margin-bottom:0.25rem;">Email sequence</p>
+    <p style="font-size:13px; color:var(--moss); margin-bottom:1rem;">Remember: breadcrumbs not billboards — restraint is the point.</p>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot belief"></div> Belief — changes what they think is true</div>
+      <div class="legend-item"><div class="legend-dot identity"></div> Identity — shifts how they see themselves</div>
+      <div class="legend-item"><div class="legend-dot belonging"></div> Belonging — makes them feel found</div>
+    </div>
+  </div>
+
+  <div id="sequence-container"></div>
+
+  <button onclick="addStoneBlock()" style="background:none; border:0.5px dashed var(--blue); border-radius:8px; padding:0.6rem 1rem; font-size:12px; color:var(--blue); cursor:pointer; width:100%; text-align:left; font-family:'DM Sans',sans-serif; margin-bottom:1.5rem; transition:all 0.15s;" onmouseover="this.style.background='rgba(114,147,197,0.06)'" onmouseout="this.style.background='none'">+ Add another stone</button>
+
+  <!-- FINAL BELIEF -->
+  <div class="transition-banner" style="margin-bottom: 1rem;">
+    <span class="transition-arrow">→</span>
+    <p class="transition-text">What is the last belief your person needs before the offer feels like the obvious next step — not a leap?</p>
+  </div>
+  <div class="card" style="margin-bottom: 1.5rem;">
+    <textarea style="min-height: 70px;" placeholder="e.g. I can do this — and now is the right time to start. The cost of waiting is higher than the cost of starting."></textarea>
+  </div>
+
+  <!-- CONVERSION MOMENT -->
+  <div class="card" style="margin-bottom: 0.75rem;">
+    <p class="card-label gold">The other bank</p>
+    <p class="card-title olive">The conversion moment</p>
+    <div class="prompts">
+      <p class="prompt">By the time someone reaches this point they've already crossed. The sales page isn't a pitch — it's the door that was always waiting at the end of the path they chose to walk.</p>
+    </div>
+    <div class="conversion-grid">
+      <div>
+        <span class="field-label">Format</span>
+        <textarea style="min-height: 70px;" placeholder="Sales page / application / discovery call / direct invitation email"></textarea>
+      </div>
+      <div>
+        <span class="field-label">Urgency mechanism</span>
+        <textarea style="min-height: 70px;" placeholder="What creates a reason to act now? Cohort intake / limited spots / cost of waiting calculation"></textarea>
+      </div>
+      <div>
+        <span class="field-label">The last belief this needs to land</span>
+        <textarea style="min-height: 70px;" placeholder="What does someone need to feel when they reach this page for the sale to feel inevitable?"></textarea>
+      </div>
+      <div>
+        <span class="field-label">The CTA</span>
+        <textarea style="min-height: 70px;" placeholder="What is the specific action you're asking them to take?"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- REFLECTION -->
+  <div class="section-header">
+    <p class="section-number">Reflection</p>
+    <h2 class="section-title">Before you go</h2>
+  </div>
+
+  <div class="card" style="margin-bottom: 0.75rem;">
+    <p class="card-label blue">The next 30 days</p>
+    <p style="font-size:13px; color:var(--moss); line-height:1.6; margin-bottom:0.75rem;">What is the one thing you'll build or write in the next 30 days to move this forward?</p>
+    <textarea style="min-height: 80px;" placeholder="One specific deliverable with a realistic deadline"></textarea>
+  </div>
+
+  <div class="card">
+    <p class="card-label moss">What shifted today</p>
+    <p style="font-size:13px; color:var(--moss); line-height:1.6; margin-bottom:0.75rem;">What landed differently — about your person, your sequence, or how you've been thinking about your funnel?</p>
+    <textarea style="min-height: 80px;" placeholder="A belief that shifted, a gap you hadn't seen, a reframe that changed something"></textarea>
+  </div>
+
+  <div class="submit-section no-print">
+    <h3 class="submit-title">Submit your workbook</h3>
+    <p class="submit-desc">Once you've completed your workbook, download it and submit it for review in order to receive personalised feedback.</p>
+    <button class="submit-btn" onclick="window.print()">Download as PDF</button>
+    <button class="print-btn" onclick="window.print()">Print workbook</button>
+  </div>
+
+</div>
+
+<script>
+let stoneCount = 0;
+let stoneBlockCount = 0;
+let emailCounts = {};
+
+function addStone() {
+  stoneCount++;
+  const container = document.getElementById('stones-container');
+  const div = document.createElement('div');
+  div.className = 'stone-item';
+  div.innerHTML = `
+    <div class="stone-dot">${stoneCount}</div>
+    <textarea class="stone-input" placeholder="Name the belief in your cold person's own voice"></textarea>
+  `;
+  container.appendChild(div);
+}
+
+function addStoneBlock() {
+  stoneBlockCount++;
+  const id = 'sb' + stoneBlockCount;
+  emailCounts[id] = 0;
+  const container = document.getElementById('sequence-container');
+
+  const div = document.createElement('div');
+  div.style.marginBottom = '0';
+
+  div.innerHTML = `
+    <div class="stone-block">
+      <div class="stone-block-inner">
+        <p class="stone-block-label">Stone ${stoneBlockCount} — core belief</p>
+        <textarea class="stone-block-belief" placeholder="Name the belief this stone needs to shift — in your cold person's own voice" style="font-family:'DM Sans',sans-serif; font-size:13px; color:var(--olive); width:100%; border:0.5px solid var(--border); border-radius:8px; padding:0.6rem 0.875rem; background:white; resize:vertical; min-height:60px; outline:none; margin-bottom:0.875rem; line-height:1.6;"></textarea>
+
+        <div id="${id}-emails"></div>
+
+        <button onclick="addEmailToStone('${id}')" class="add-email-to-stone">+ Add email to this stone</button>
+      </div>
+
+      <div class="stone-transition">
+        <p class="stone-transition-label">→ Transition question</p>
+        <textarea placeholder="What question is your person left with after this belief has been shifted — the question your next stone needs to answer?" style="min-height:54px; font-size:13px;"></textarea>
+      </div>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:0.75rem; padding:0.25rem 0 0.25rem 1.25rem; margin-bottom:0;">
+      <div style="flex:1; height:1px; background:var(--border);"></div>
+      <span style="font-size:11px; color:var(--blue);">↓</span>
+      <div style="flex:1; height:1px; background:var(--border);"></div>
+    </div>
+  `;
+
+  container.appendChild(div);
+  addEmailToStone(id);
+}
+
+function addEmailToStone(stoneId) {
+  emailCounts[stoneId] = (emailCounts[stoneId] || 0) + 1;
+  const count = emailCounts[stoneId];
+  const uid = stoneId + 'e' + count;
+  const container = document.getElementById(stoneId + '-emails');
+
+  const div = document.createElement('div');
+  div.className = 'email-block';
+  div.innerHTML = `
+    <div class="email-block-label">
+      <span class="email-tag">Email ${count}</span>
+      <div class="job-pills">
+        <input type="radio" class="job-pill belief" name="${uid}" id="${uid}-b"><label for="${uid}-b">Belief</label>
+        <input type="radio" class="job-pill identity" name="${uid}" id="${uid}-i"><label for="${uid}-i">Identity</label>
+        <input type="radio" class="job-pill belonging" name="${uid}" id="${uid}-be"><label for="${uid}-be">Belonging</label>
+      </div>
+    </div>
+    <textarea placeholder="What is this email's brief — what does it need to make your person feel, think, or do? What mechanism? (story / reframe / exercise / case study / video / tool)" style="min-height:70px; font-size:13px;"></textarea>
+  `;
+  container.appendChild(div);
+}
+
+// Initialise
+for (let i = 0; i < 5; i++) addStone();
+for (let i = 0; i < 3; i++) addStoneBlock();
+</script>
+
+</body>
+</html>
