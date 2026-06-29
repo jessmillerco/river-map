@@ -110,7 +110,7 @@ Respond in this exact JSON format with no markdown, no backticks, just raw JSON:
     if (!response.ok) {
       const errorText = await response.text();
       console.error('Anthropic API error:', response.status, errorText);
-      return res.status(502).json({ error: 'Analysis service unavailable. Please try again.' });
+      return res.status(502).json({ error: 'Analysis service unavailable. Please try again.', _debug_status: response.status, _debug_error: errorText });
     }
 
     const data = await response.json();
@@ -134,6 +134,6 @@ Respond in this exact JSON format with no markdown, no backticks, just raw JSON:
     return res.status(200).json(parsed);
   } catch (err) {
     console.error('Handler error:', err);
-    return res.status(500).json({ error: 'Something went wrong. Please try again.' });
+    return res.status(500).json({ error: 'Something went wrong. Please try again.', _debug_error: err.message });
   }
 }
