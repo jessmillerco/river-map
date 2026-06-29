@@ -110,23 +110,20 @@ Respond in raw JSON only (no markdown, no backticks):
       return res.status(502).json({ error: 'Empty response from analysis service.' });
     }
 
-    // Strip markdown code fences then parse
-    const stripped = completion
-      .replace(/^[\s\S]*?```(?:json)?[ \t]*/i, '')
-      .replace(/[ \t]*```[\s\S]*$/, '')
-      .trim();
+    // Extract JSON object — find first { and last } to handle any wrapping
+    const start = completion.indexOf('{');
+    const end = completion.lastIndexOf('}');
+    if (start === -1 || end === -1 || end <= start) {
+      console.error('No JSON object found. Raw content:', completion);
+      return res.status(502).json({ error: 'Could not parse analysis response. Please try again.', _debug_raw: completion.slice(0, 500) });
+    }
 
     let parsed;
     try {
-      parsed = JSON.parse(stripped);
-    } catch {
-      // If stripping fences didn't work, try parsing the raw completion
-      try {
-        parsed = JSON.parse(completion.trim());
-      } catch (e) {
-        console.error('JSON parse failed. Raw content:', completion);
-        return res.status(502).json({ error: 'Could not parse analysis response. Please try again.', _debug_raw: completion.slice(0, 500) });
-      }
+      parsed = JSON.parse(completion.slice(start, end + 1));
+    } catch (e) {
+      console.error('JSON parse failed. Raw content:', completion);
+      return res.status(502).json({ error: 'Could not parse analysis response. Please try again.', _debug_raw: completion.slice(0, 500) });
     }
 
     return res.status(200).json(parsed);
