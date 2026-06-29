@@ -455,7 +455,7 @@
 
     .results-heading {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem;
+      font-size: 2.4rem;
       color: var(--cosmos);
       margin-bottom: 32px;
       padding-bottom: 16px;
@@ -532,17 +532,17 @@
 
     .river-map-doc-heading {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.5rem;
+      font-size: 1.8rem;
       color: var(--cosmos);
-      margin-bottom: 16px;
-      padding-bottom: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
       border-bottom: 1px solid var(--border);
     }
 
     .offer-promise-block {
       background: var(--olive);
-      border-radius: 8px;
-      padding: 20px 24px;
+      border-radius: 12px;
+      padding: 1.25rem;
       margin-bottom: 16px;
     }
 
@@ -552,36 +552,63 @@
 
     .offer-promise-block p {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.1rem;
+      font-size: 19px;
       color: var(--bone);
       line-height: 1.6;
       font-weight: 400;
     }
 
-    .bank-section { margin-bottom: 16px; }
+    /* Two-column banks in results */
+    .results-banks-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
 
-    .bank-section-heading {
-      font-family: 'DM Sans', sans-serif;
+    @media (max-width: 600px) {
+      .results-banks-grid { grid-template-columns: 1fr; }
+    }
+
+    .result-bank-card {
+      background: var(--surface);
+      border-radius: 12px;
+      border: 0.5px solid var(--border);
+      padding: 1.25rem;
+    }
+
+    .result-bank-card.cosmos-bank { border-top: 3px solid var(--cosmos); }
+    .result-bank-card.blue-bank { border-top: 3px solid var(--blue); }
+
+    .result-bank-card .card-eyebrow {
       font-size: 10px;
       font-weight: 500;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      margin-bottom: 10px;
+      margin-bottom: 0.4rem;
     }
 
-    .bank-section-heading.cosmos { color: var(--cosmos); }
-    .bank-section-heading.blue { color: var(--blue); }
+    .result-bank-card.cosmos-bank .card-eyebrow { color: var(--cosmos); }
+    .result-bank-card.blue-bank .card-eyebrow { color: var(--blue); }
+
+    .result-bank-card .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 19px;
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+
+    .result-bank-card.cosmos-bank .card-title { color: var(--cosmos); }
+    .result-bank-card.blue-bank .card-title { color: var(--blue); }
 
     .subsection-card {
-      background: var(--surface);
-      border: 0.5px solid var(--border);
-      border-radius: 8px;
-      padding: 16px 20px;
+      background: rgba(235,224,209,0.35);
+      border-radius: 6px;
+      padding: 12px 14px;
       margin-bottom: 8px;
     }
 
-    .subsection-card.cosmos-border { border-left: 4px solid var(--cosmos); }
-    .subsection-card.blue-border { border-left: 4px solid var(--blue); }
+    .subsection-card:last-child { margin-bottom: 0; }
 
     .subsection-label {
       font-family: 'DM Sans', sans-serif;
@@ -590,7 +617,7 @@
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--moss);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .subsection-list {
@@ -600,54 +627,85 @@
     }
 
     .subsection-list li {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--olive);
       line-height: 1.7;
       padding: 3px 0;
-      border-bottom: 0.5px solid rgba(210,200,187,0.4);
+      border-bottom: 0.5px solid rgba(210,200,187,0.5);
     }
 
     .subsection-list li:last-child { border-bottom: none; }
 
     .core-problem-text {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--olive);
       line-height: 1.7;
       font-style: italic;
     }
 
-    .stones-result-list {
-      background: var(--surface);
-      border: 0.5px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
+    /* Stones results */
+    .stones-result-card {
+      background: var(--white);
+      border: 0.5px solid var(--blue);
+      border-radius: 12px;
+      padding: 1.25rem;
       margin-bottom: 16px;
+    }
+
+    .stones-result-card .card-eyebrow {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 0.4rem;
+    }
+
+    .stones-result-card .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 19px;
+      font-weight: 500;
+      color: var(--blue);
+      margin-bottom: 1rem;
+    }
+
+    .stones-result-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
     }
 
     .stone-result-row {
       display: flex;
       align-items: flex-start;
-      gap: 14px;
-      padding: 14px 20px;
-      border-bottom: 0.5px solid var(--border);
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 0.5px solid rgba(210,200,187,0.5);
     }
 
     .stone-result-row:last-child { border-bottom: none; }
 
-    .stone-result-num {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1rem;
-      color: var(--moss);
+    .stone-result-dot {
       flex-shrink: 0;
-      width: 18px;
-      padding-top: 2px;
-      text-align: right;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 1px solid var(--blue);
+      background: var(--bone);
+      color: var(--blue);
+      font-size: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
     }
 
     .stone-result-content { flex: 1; }
 
     .stone-result-belief {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--olive);
       line-height: 1.65;
     }
@@ -656,7 +714,7 @@
       font-size: 12px;
       color: var(--moss);
       line-height: 1.5;
-      margin-top: 4px;
+      margin-top: 3px;
       font-style: italic;
     }
 
@@ -730,7 +788,7 @@
     function SubsectionCard({ label, items, borderClass }) {
       if (!items || items.length === 0) return null;
       return (
-        <div className={`subsection-card ${borderClass}`}>
+        <div className="subsection-card">
           <div className="subsection-label">{label}</div>
           <ul className="subsection-list">
             {items.map((item, i) => <li key={i}>{item}</li>)}
@@ -772,31 +830,47 @@
             <div className="river-map-doc">
               <h3 className="river-map-doc-heading">Your rewritten river map</h3>
 
+              {/* Offer promise */}
               <div className="offer-promise-block">
                 <div className="result-card-label">Offer promise</div>
                 <p>{map.offerPromise}</p>
               </div>
 
-              <div className="bank-section">
-                <div className="bank-section-heading cosmos">This bank — who your cold person is right now</div>
-                <SubsectionCard label="What they believe" items={tb.beliefs} borderClass="cosmos-border" />
-                <SubsectionCard label="How they see themselves" items={tb.selfImage} borderClass="cosmos-border" />
-                {tb.coreProblem && (
-                  <div className="subsection-card cosmos-border">
-                    <div className="subsection-label">Their core problem</div>
-                    <p className="core-problem-text">{tb.coreProblem}</p>
-                  </div>
-                )}
-                <SubsectionCard label="How this shows up in their day" items={tb.dailyExperience} borderClass="cosmos-border" />
+              {/* Two-column banks */}
+              <div className="results-banks-grid">
+                <div className="result-bank-card cosmos-bank">
+                  <div className="card-eyebrow">The current bank</div>
+                  <div className="card-title">Your cold connection, right now</div>
+                  <SubsectionCard label="What they believe" items={tb.beliefs} />
+                  <SubsectionCard label="How they see themselves" items={tb.selfImage} />
+                  {tb.coreProblem && (
+                    <div className="subsection-card">
+                      <div className="subsection-label">Their core problem</div>
+                      <p className="core-problem-text">{tb.coreProblem}</p>
+                    </div>
+                  )}
+                  <SubsectionCard label="How this shows up in their day" items={tb.dailyExperience} />
+                </div>
+
+                <div className="result-bank-card blue-bank">
+                  <div className="card-eyebrow">The other bank</div>
+                  <div className="card-title">After working with you</div>
+                  <SubsectionCard label="What they now believe" items={ob.beliefs} />
+                  <SubsectionCard label="How they now see themselves" items={ob.selfImage} />
+                  <SubsectionCard label="What they have that they didn't have before" items={ob.whatTheyHave} />
+                  <SubsectionCard label="What looks different in their day" items={ob.dailyExperience} />
+                </div>
               </div>
 
+              {/* Stepping stones */}
               {map.steppingStones && map.steppingStones.length > 0 && (
-                <div className="bank-section">
-                  <div className="bank-section-heading cosmos">Stepping stones — the belief journey</div>
+                <div className="stones-result-card">
+                  <div className="card-eyebrow">The belief journey</div>
+                  <div className="card-title">Stepping stones</div>
                   <div className="stones-result-list">
                     {map.steppingStones.map((stone, i) => (
                       <div key={i} className="stone-result-row">
-                        <span className="stone-result-num">{stone.num || i + 1}</span>
+                        <span className="stone-result-dot">{stone.num || i + 1}</span>
                         <div className="stone-result-content">
                           <div className="stone-result-belief">{stone.belief}</div>
                           {stone.note && <div className="stone-result-note">{stone.note}</div>}
@@ -806,14 +880,6 @@
                   </div>
                 </div>
               )}
-
-              <div className="bank-section">
-                <div className="bank-section-heading blue">The other bank — after working with you</div>
-                <SubsectionCard label="What they now believe" items={ob.beliefs} borderClass="blue-border" />
-                <SubsectionCard label="How they now see themselves" items={ob.selfImage} borderClass="blue-border" />
-                <SubsectionCard label="What they have that they didn't have before" items={ob.whatTheyHave} borderClass="blue-border" />
-                <SubsectionCard label="What looks different in their day" items={ob.dailyExperience} borderClass="blue-border" />
-              </div>
             </div>
           )}
 
