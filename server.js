@@ -56,9 +56,9 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  let filePath = path.join(__dirname, 'public', req.url === '/' ? 'index.html' : req.url);
+  let filePath = path.join(__dirname, req.url === '/' ? 'index.html' : req.url);
   if (!fs.existsSync(filePath)) {
-    filePath = path.join(__dirname, 'public', 'index.html');
+    filePath = path.join(__dirname, 'index.html');
   }
 
   try {
