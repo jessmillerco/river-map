@@ -23,71 +23,62 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
-  const userMessage = `Here is the River Map to analyse:
+  const userMessage = `River Map to analyse:
 
-OFFER PROMISE:
-${offerPromise}
+OFFER PROMISE: ${offerPromise}
 
-THIS BANK — where the cold prospect is right now:
-${thisBank}
+THIS BANK: ${thisBank}
 
-THE OTHER BANK — where they are after working with this person:
-${otherBank}
+OTHER BANK: ${otherBank}
 
-STEPPING STONES — the belief journey (${stones.length} stones):
-${stones.map((s, i) => `Stone ${i + 1}: ${s}`).join('\n\n')}
+STEPPING STONES (${stones.length}):
+${stones.map((s, i) => `${i + 1}. ${s}`).join('\n')}
 
-Please analyse this River Map according to your framework and return your assessment in the exact JSON format specified.`;
+Return your assessment in the exact JSON format specified.`;
 
-  const systemPrompt = `You are a strategic copywriting and conversion advisor who specialises in helping service-based business owners understand the belief journey their cold prospect needs to take before they are ready to purchase. You have a deep understanding of behavioural psychology, identity shift, and what makes content and sequences actually convert in the current market.
+  const systemPrompt = `You are a conversion advisor specialising in the belief journey from cold prospect to paying client. Analyse the River Map below through four lenses:
 
-Your role is to analyse a River Map — a framework that models the belief journey from cold prospect to converted client — and give honest, specific, actionable feedback.
+SPECIFICITY — Is language specific and felt, or vague? Flag expert trap language (speaking from the other bank — using framing a cold person couldn't yet access). The bar: would a cold person read this and think "that is exactly me"? "Feels stuck", "wants freedom", "desires transformation" all fail this test.
 
-You evaluate through four lenses:
+SEQUENCE — Does each stone logically earn the next, or are there leaps? Are two beliefs collapsed into one stone?
 
-SPECIFICITY — Is the language specific and felt, or vague and lofty? Are they speaking from this bank or from the other bank (the expert trap — using language, outcomes, or framing that only makes sense to someone who has already crossed)? Flag any language that a cold person couldn't yet access or wouldn't recognise as their own.
+COMPLETENESS — Does the first stone meet a genuinely cold person? Does the last stone make yes feel inevitable?
 
-SEQUENCE — Does each stepping stone logically earn the next? Is the person being asked to leap rather than step anywhere? Are there places where two beliefs are being collapsed into one stone when they actually need to be separate?
+ALIGNMENT — Do the banks and stones connect to what the offer actually delivers, or does the other bank describe a vision beyond what the offer provides?
 
-COMPLETENESS — Are there missing stones? Does the first stone reflect where a genuinely cold person is standing — not someone who is already aware, already curious, already half-convinced? Does the last stone make saying yes feel inevitable rather than still requiring a leap?
+Be honest, specific, and direct. Keep each feedback field to 1-2 sentences. Suggestions must be concrete — a rewrite or a pointed question, not general advice.
 
-ALIGNMENT — Do the two banks and the stones coherently connect to what the offer actually delivers? Is the other bank the direct result of the offer or an aspirational vision that goes beyond what the offer provides?
-
-The quality standard for specificity is extremely high. Vague language like 'feels stuck', 'wants more freedom', 'ready to step into their potential', 'desires transformation', or 'looking for clarity' is not acceptable. The bar is: would a cold person read this description and think 'that is exactly me, in those exact words'? If not, flag it.
-
-A great river map reads like the person who built it has genuinely sat inside their cold prospect's daily experience — not observed it from the outside or described it from the other bank.
-
-Respond in this exact JSON format with no markdown, no backticks, just raw JSON:
+Respond in raw JSON only (no markdown, no backticks):
 {
-  "overall": "3-4 sentences giving an honest overall read — what is working, what the single biggest opportunity is, and what quality of attention this map shows toward the cold person",
-  "expertTrapFlags": ["specific phrase or section that is speaking from the other bank, with a one sentence explanation of why"],
+  "overall": "2-3 honest sentences: what's working, the biggest gap, what the map reveals about how well this person knows their cold prospect",
+  "expertTrapFlags": ["quote or paraphrase the offending phrase — one sentence on why it's from the other bank"],
   "thisBank": {
     "score": "strong | needs-work | gap",
-    "feedback": "specific feedback — is it specific enough, does it name the real fear in the cold person's own language, does it stay on this bank or drift to the other side",
-    "suggestion": "one specific rewrite suggestion or question to push the specificity further"
+    "feedback": "1-2 sentences",
+    "suggestion": "one concrete rewrite or question"
   },
   "otherBank": {
     "score": "strong | needs-work | gap",
-    "feedback": "specific feedback — is it the direct result of the offer or an aspirational vision, is it specific and sensory or vague and lofty",
-    "suggestion": "one specific rewrite suggestion or question to push the specificity further"
+    "feedback": "1-2 sentences",
+    "suggestion": "one concrete rewrite or question"
   },
   "stones": [
     {
       "num": 1,
       "score": "strong | needs-work | gap | expert-trap | leap",
-      "feedback": "one to two sentences of specific feedback on this stone",
-      "suggestion": "one specific suggestion to sharpen this stone if needed, or null if strong"
+      "feedback": "1-2 sentences",
+      "suggestion": "one concrete suggestion, or null if strong"
     }
   ],
-  "missingStones": "describe any stones missing from the sequence with enough specificity that the person knows exactly what belief needs to be added and where — or null if the sequence is complete",
+  "missingStones": "specific description of what belief is missing and where it belongs in the sequence — or null",
   "philosophyProofPOVPain": {
     "philosophy": "present | missing | weak",
     "proof": "present | missing | weak",
     "POV": "present | missing | weak",
     "pain": "present | missing | weak",
-    "feedback": "one sentence on what is missing or underleveraged across the map"
+    "feedback": "one sentence on what is most underleveraged"
   },
-  "topPriority": "the single most important thing to fix or sharpen first — specific and actionable"
+  "topPriority": "the single most important fix — specific and actionable in one sentence"
 }`;
 
   try {
@@ -100,7 +91,7 @@ Respond in this exact JSON format with no markdown, no backticks, just raw JSON:
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
-        max_tokens: 4000,
+        max_tokens: 1500,
         system: systemPrompt,
         messages: [
           { role: 'user', content: userMessage },
@@ -122,7 +113,6 @@ Respond in this exact JSON format with no markdown, no backticks, just raw JSON:
       return res.status(502).json({ error: 'Empty response from analysis service.' });
     }
 
-    // Prepend the prefill character we used to force JSON output
     const content = '{' + completion;
 
     let parsed;
