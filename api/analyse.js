@@ -1,5 +1,3 @@
-export const config = { maxDuration: 30 };
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -91,7 +89,7 @@ Respond in raw JSON only (no markdown, no backticks):
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
-        max_tokens: 1500,
+        max_tokens: 1000,
         system: systemPrompt,
         messages: [
           { role: 'user', content: userMessage },
