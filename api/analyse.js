@@ -98,7 +98,7 @@ Respond in this exact JSON format with no markdown, no backticks, just raw JSON:
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
-        max_tokens: 1500,
+        max_tokens: 2048,
         system: systemPrompt,
         messages: [{ role: 'user', content: userMessage }],
       }),
@@ -117,18 +117,24 @@ Respond in this exact JSON format with no markdown, no backticks, just raw JSON:
       return res.status(502).json({ error: 'Empty response from analysis service.' });
     }
 
+    // Strip markdown code fences if present (```json ... ``` or ``` ... ```)
+    const stripped = content.replace(/^```(?:json)?\s*/i, '').replace(/\s*```\s*$/, '').trim();
+
     let parsed;
     try {
-      parsed = JSON.parse(content);
+      parsed = JSON.parse(stripped);
     } catch {
-      const match = content.match(/\{[\s\S]*\}/);
+      // Last resort: extract the outermost JSON object
+      const match = stripped.match(/\{[\s\S]*\}/);
       if (match) {
         try {
           parsed = JSON.parse(match[0]);
-        } catch {
+        } catch (e) {
+          console.error('JSON parse failed. Raw content:', content);
           return res.status(502).json({ error: 'Could not parse analysis response. Please try again.' });
         }
       } else {
+        console.error('No JSON object found. Raw content:', content);
         return res.status(502).json({ error: 'Unexpected response format. Please try again.' });
       }
     }
