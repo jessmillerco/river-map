@@ -423,59 +423,146 @@
 
     .missing-stones-card .result-card-label { color: #8a6e1c; }
 
-    .ppp-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-bottom: 16px;
+    /* Suggested river map */
+    .river-map-doc {
+      margin-bottom: 20px;
     }
 
-    @media (max-width: 480px) {
-      .ppp-grid { grid-template-columns: 1fr; }
+    .river-map-doc-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      color: var(--cosmos);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
     }
 
-    .ppp-item {
-      background: var(--bone);
-      border-radius: 3px;
-      padding: 12px 16px;
+    .offer-promise-block {
+      background: var(--olive);
+      border-radius: 4px;
+      padding: 24px 28px;
+      margin-bottom: 20px;
     }
 
-    .ppp-item-label {
+    .offer-promise-block .result-card-label {
+      color: rgba(235,224,209,0.6);
+    }
+
+    .offer-promise-block p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      color: var(--bone);
+      line-height: 1.6;
+      font-weight: 400;
+    }
+
+    .bank-section {
+      margin-bottom: 20px;
+    }
+
+    .bank-section-heading {
+      font-family: 'DM Sans', sans-serif;
       font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .bank-section-heading.cosmos { color: var(--cosmos); }
+    .bank-section-heading.blue { color: var(--blue); }
+
+    .subsection-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 20px 24px;
+      margin-bottom: 10px;
+    }
+
+    .subsection-card.cosmos-border { border-left: 4px solid var(--cosmos); }
+    .subsection-card.blue-border { border-left: 4px solid var(--blue); }
+
+    .subsection-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.68rem;
       font-weight: 500;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--moss);
-      margin-bottom: 4px;
+      margin-bottom: 10px;
     }
 
-    .ppp-item-value {
-      font-size: 0.85rem;
-      font-weight: 500;
+    .subsection-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
     }
 
-    .ppp-item-value.present { color: var(--moss); }
-    .ppp-item-value.missing { color: var(--coral); }
-    .ppp-item-value.weak { color: var(--gold); }
+    .subsection-list li {
+      font-size: 0.9375rem;
+      color: var(--olive);
+      line-height: 1.7;
+      padding: 4px 0;
+      border-bottom: 1px solid rgba(210,200,187,0.4);
+    }
 
-    .top-priority-card {
-      background: var(--cosmos);
+    .subsection-list li:last-child { border-bottom: none; }
+
+    .core-problem-text {
+      font-size: 0.9375rem;
+      color: var(--olive);
+      line-height: 1.7;
+      font-style: italic;
+    }
+
+    .stones-result-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      background: var(--white);
+      border: 1px solid var(--border);
       border-radius: 4px;
-      padding: 32px;
+      overflow: hidden;
       margin-bottom: 20px;
-      color: var(--bone);
     }
 
-    .top-priority-card .result-card-label {
-      color: rgba(235,224,209,0.6);
+    .stone-result-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border);
     }
 
-    .top-priority-card p {
+    .stone-result-row:last-child { border-bottom: none; }
+
+    .stone-result-num {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.35rem;
-      color: var(--bone);
-      font-weight: 400;
+      font-size: 1.1rem;
+      color: var(--moss);
+      flex-shrink: 0;
+      width: 20px;
+      padding-top: 2px;
+      text-align: right;
+    }
+
+    .stone-result-content {
+      flex: 1;
+    }
+
+    .stone-result-belief {
+      font-size: 0.9375rem;
+      color: var(--olive);
+      line-height: 1.65;
+    }
+
+    .stone-result-note {
+      font-size: 0.8rem;
+      color: var(--moss);
       line-height: 1.5;
+      margin-top: 6px;
+      font-style: italic;
     }
 
     .retry-btn {
@@ -559,143 +646,102 @@
       } catch {}
     }
 
-    function ScoreBadge({ score }) {
-      const labels = {
-        'strong': 'Strong',
-        'needs-work': 'Needs work',
-        'gap': 'Gap',
-        'expert-trap': 'Expert trap',
-        'leap': 'Leap',
-      };
+    function SubsectionCard({ label, items, borderClass }) {
+      if (!items || items.length === 0) return null;
       return (
-        <span className={`score-badge ${score}`}>
-          {labels[score] || score}
-        </span>
-      );
-    }
-
-    function BankResult({ title, label, data }) {
-      return (
-        <div className="result-card">
-          <div className="result-card-label">{label}</div>
-          <h3>{title}</h3>
-          <ScoreBadge score={data.score} />
-          <p className="feedback-text">{data.feedback}</p>
-          {data.suggestion && (
-            <div className="suggestion-box">
-              <strong>One thing to try</strong>
-              {data.suggestion}
-            </div>
-          )}
+        <div className={`subsection-card ${borderClass}`}>
+          <div className="subsection-label">{label}</div>
+          <ul className="subsection-list">
+            {items.map((item, i) => <li key={i}>{item}</li>)}
+          </ul>
         </div>
       );
     }
 
-    function PPPLabel({ value }) {
-      return (
-        <span className={`ppp-item-value ${value}`}>
-          {value.charAt(0).toUpperCase() + value.slice(1)}
-        </span>
-      );
-    }
-
     function Results({ data, onReset }) {
+      const map = data.suggestedRiverMap || {};
+      const tb = map.thisBank || {};
+      const ob = map.otherBank || {};
+
       return (
         <div className="results">
-          <h2 className="results-heading">Your river map analysis</h2>
+          <h2 className="results-heading">Your river map — analysed and rewritten</h2>
 
-          {/* Overall */}
+          {/* Section 1 — Overall read */}
           <div className="result-card overall">
             <div className="result-card-label">Overall read</div>
-            <p>{data.overall}</p>
+            <p>{data.overallRead}</p>
           </div>
 
-          {/* Expert traps */}
-          <div className={`result-card expert-traps-card`}>
+          {/* Section 2 — Expert trap flags */}
+          <div className="result-card expert-traps-card">
             <div className="result-card-label">Expert trap flags</div>
             <h3>Are you speaking from the other bank?</h3>
             {data.expertTrapFlags && data.expertTrapFlags.length > 0 ? (
               data.expertTrapFlags.map((flag, i) => (
-                <div key={i} className="expert-trap-item">{flag}</div>
+                <div key={i} className="expert-trap-item">
+                  <strong style={{ display: 'block', marginBottom: '4px' }}>{flag.phrase}</strong>
+                  {flag.why}
+                </div>
               ))
             ) : (
               <div className="no-expert-traps">No expert traps detected — your language stays on this bank throughout.</div>
             )}
           </div>
 
-          {/* This bank */}
-          {data.thisBank && (
-            <BankResult
-              title="This bank"
-              label="Where your cold prospect is right now"
-              data={data.thisBank}
-            />
-          )}
+          {/* Section 3 — Suggested river map */}
+          {map.offerPromise && (
+            <div className="river-map-doc">
+              <h3 className="river-map-doc-heading">Your rewritten river map</h3>
 
-          {/* Other bank */}
-          {data.otherBank && (
-            <BankResult
-              title="The other bank"
-              label="Where they land after working with you"
-              data={data.otherBank}
-            />
-          )}
-
-          {/* Stones */}
-          {data.stones && data.stones.length > 0 && (
-            <div className="result-card">
-              <div className="result-card-label">Stone by stone</div>
-              <h3>The belief journey</h3>
-              {data.stones.map((stone, i) => (
-                <div key={i} className="stone-result">
-                  <div className="stone-num">Stone {stone.num}</div>
-                  <ScoreBadge score={stone.score} />
-                  <p className="feedback-text">{stone.feedback}</p>
-                  {stone.suggestion && (
-                    <div className="suggestion-box">
-                      <strong>One thing to try</strong>
-                      {stone.suggestion}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Missing stones */}
-          {data.missingStones && (
-            <div className="missing-stones-card">
-              <div className="result-card-label">Missing stones</div>
-              <p style={{ fontSize: '0.9375rem', color: '#5a4a1a', lineHeight: '1.7' }}>{data.missingStones}</p>
-            </div>
-          )}
-
-          {/* Philosophy / Proof / POV / Pain */}
-          {data.philosophyProofPOVPain && (
-            <div className="result-card">
-              <div className="result-card-label">Philosophy · Proof · POV · Pain</div>
-              <h3>What's present across the map</h3>
-              <div className="ppp-grid">
-                {['philosophy', 'proof', 'POV', 'pain'].map(key => (
-                  <div key={key} className="ppp-item">
-                    <div className="ppp-item-label">{key}</div>
-                    <PPPLabel value={data.philosophyProofPOVPain[key] || 'missing'} />
-                  </div>
-                ))}
+              {/* Offer promise */}
+              <div className="offer-promise-block">
+                <div className="result-card-label">Offer promise</div>
+                <p>{map.offerPromise}</p>
               </div>
-              {data.philosophyProofPOVPain.feedback && (
-                <p style={{ fontSize: '0.875rem', color: 'var(--moss)', fontStyle: 'italic' }}>
-                  {data.philosophyProofPOVPain.feedback}
-                </p>
+
+              {/* This bank */}
+              <div className="bank-section">
+                <div className="bank-section-heading cosmos">This bank — who your cold person is right now</div>
+                <SubsectionCard label="What they believe" items={tb.beliefs} borderClass="cosmos-border" />
+                <SubsectionCard label="How they see themselves" items={tb.selfImage} borderClass="cosmos-border" />
+                {tb.coreProblem && (
+                  <div className="subsection-card cosmos-border">
+                    <div className="subsection-label">Their core problem</div>
+                    <p className="core-problem-text">{tb.coreProblem}</p>
+                  </div>
+                )}
+                <SubsectionCard label="How this shows up in their day" items={tb.dailyExperience} borderClass="cosmos-border" />
+              </div>
+
+              {/* Stepping stones */}
+              {map.steppingStones && map.steppingStones.length > 0 && (
+                <div className="bank-section">
+                  <div className="bank-section-heading cosmos">Stepping stones — the belief journey</div>
+                  <div className="stones-result-list">
+                    {map.steppingStones.map((stone, i) => (
+                      <div key={i} className="stone-result-row">
+                        <span className="stone-result-num">{stone.num || i + 1}</span>
+                        <div className="stone-result-content">
+                          <div className="stone-result-belief">{stone.belief}</div>
+                          {stone.note && <div className="stone-result-note">{stone.note}</div>}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               )}
+
+              {/* Other bank */}
+              <div className="bank-section">
+                <div className="bank-section-heading blue">The other bank — after working with you</div>
+                <SubsectionCard label="What they now believe" items={ob.beliefs} borderClass="blue-border" />
+                <SubsectionCard label="How they now see themselves" items={ob.selfImage} borderClass="blue-border" />
+                <SubsectionCard label="What they have that they didn't have before" items={ob.whatTheyHave} borderClass="blue-border" />
+                <SubsectionCard label="What looks different in their day" items={ob.dailyExperience} borderClass="blue-border" />
+              </div>
             </div>
           )}
-
-          {/* Top priority */}
-          <div className="top-priority-card">
-            <div className="result-card-label">Your one thing</div>
-            <p>{data.topPriority}</p>
-          </div>
 
           <hr className="divider" />
           <button className="add-stone-btn" onClick={onReset} style={{ marginTop: 0 }}>
