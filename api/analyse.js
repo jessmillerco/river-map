@@ -98,7 +98,7 @@ Respond in this exact JSON format with no markdown, no backticks, just raw JSON:
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
-        max_tokens: 2048,
+        max_tokens: 4000,
         system: systemPrompt,
         messages: [
           { role: 'user', content: userMessage },
