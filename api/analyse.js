@@ -131,11 +131,11 @@ Respond in this exact JSON format with no markdown, no backticks, just raw JSON:
           parsed = JSON.parse(match[0]);
         } catch (e) {
           console.error('JSON parse failed. Raw content:', content);
-          return res.status(502).json({ error: 'Could not parse analysis response. Please try again.' });
+          return res.status(502).json({ error: 'Could not parse analysis response. Please try again.', _debug_raw: content.slice(0, 500) });
         }
       } else {
         console.error('No JSON object found. Raw content:', content);
-        return res.status(502).json({ error: 'Unexpected response format. Please try again.' });
+        return res.status(502).json({ error: 'Unexpected response format. Please try again.', _debug_raw: content.slice(0, 500) });
       }
     }
 
