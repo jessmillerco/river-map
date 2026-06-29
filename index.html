@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The River Map</title>
+  <title>The River Crossing</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -15,6 +15,7 @@
 
     :root {
       --bone: #EBE0D1;
+      --surface: #FDFAF7;
       --olive: #323D27;
       --cosmos: #461420;
       --moss: #7D774F;
@@ -43,192 +44,327 @@
       line-height: 1.2;
     }
 
+    /* ── Header ── */
     .site-header {
-      padding: 40px 24px 32px;
+      background: var(--olive);
+      padding: 4rem 3rem;
       text-align: center;
-      border-bottom: 1px solid var(--border);
+    }
+
+    .site-header .eyebrow {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--moss);
+      margin-bottom: 1.25rem;
     }
 
     .site-header h1 {
-      font-size: clamp(2.4rem, 5vw, 3.6rem);
-      color: var(--cosmos);
-      margin-bottom: 12px;
-      letter-spacing: -0.01em;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 52px;
+      font-weight: 300;
+      color: var(--bone);
+      line-height: 1.1;
+      margin-bottom: 0;
     }
 
-    .site-header p {
-      font-size: 1rem;
-      color: var(--moss);
+    .site-header h1 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .header-divider {
+      width: 60px;
+      height: 1px;
+      background: var(--gold);
+      margin: 2rem auto;
+    }
+
+    .site-header .subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--champagne);
       max-width: 600px;
       margin: 0 auto;
-      font-weight: 300;
+      line-height: 1.5;
     }
 
+    /* ── Layout ── */
     .main {
-      max-width: 780px;
+      max-width: 1100px;
       margin: 0 auto;
       padding: 48px 24px 80px;
     }
 
-    .section-block {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 36px;
+    /* ── Offer promise card (dark) ── */
+    .offer-card {
+      background: var(--olive);
+      border-radius: 12px;
+      padding: 1.25rem;
       margin-bottom: 28px;
     }
 
-    .section-label {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.5rem;
-      color: var(--cosmos);
-      margin-bottom: 8px;
+    .offer-card .card-eyebrow {
+      font-size: 10px;
       font-weight: 500;
-    }
-
-    .section-number {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--moss);
-      margin-bottom: 6px;
+      margin-bottom: 0.5rem;
     }
 
-    .embedded-prompts {
-      margin: 14px 0 12px;
-      padding: 14px 16px;
-      background: var(--bone);
-      border-left: 2px solid var(--champagne);
-      border-radius: 0 2px 2px 0;
-    }
-
-    .embedded-prompts p {
-      font-size: 0.875rem;
-      color: var(--moss);
-      margin-bottom: 6px;
-      font-weight: 300;
-    }
-
-    .embedded-prompts p:last-child { margin-bottom: 0; }
-
-    .embedded-prompts p::before {
-      content: '— ';
-      color: var(--champagne);
+    .offer-card .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 19px;
       font-weight: 400;
+      color: var(--bone);
+      margin-bottom: 0.875rem;
     }
 
-    .field-instruction {
-      font-size: 0.8rem;
-      color: var(--moss);
-      margin-top: 10px;
-      font-style: italic;
-    }
-
-    textarea, input[type="text"] {
-      width: 100%;
+    .offer-card textarea {
+      background: rgba(235,224,209,0.08);
+      border: 0.5px solid rgba(235,224,209,0.2);
+      color: var(--bone);
+      border-radius: 8px;
+      padding: 0.75rem 0.875rem;
+      font-size: 13px;
       font-family: 'DM Sans', sans-serif;
-      font-size: 0.9375rem;
-      color: var(--olive);
-      background: var(--bone);
-      border: 1px solid var(--border);
-      border-radius: 3px;
-      padding: 14px 16px;
+      line-height: 1.7;
+      width: 100%;
       resize: vertical;
-      transition: border-color 0.15s, box-shadow 0.15s;
       outline: none;
-      line-height: 1.6;
+      transition: border-color 0.15s;
     }
 
-    textarea:focus, input[type="text"]:focus {
-      border-color: var(--moss);
-      box-shadow: 0 0 0 2px rgba(125,119,79,0.12);
-    }
-
-    textarea::placeholder, input[type="text"]::placeholder {
-      color: var(--border);
+    .offer-card textarea::placeholder {
+      color: rgba(235,224,209,0.3);
       font-style: italic;
+    }
+
+    .offer-card textarea:focus {
+      border-color: var(--gold);
+    }
+
+    /* ── Three-column river layout ── */
+    .river-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 28px;
+      align-items: start;
+    }
+
+    @media (max-width: 760px) {
+      .river-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ── Bank cards (light) ── */
+    .bank-card {
+      background: var(--surface);
+      border-radius: 12px;
+      border: 0.5px solid var(--border);
+      padding: 1.25rem;
+    }
+
+    .bank-card .card-eyebrow {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .bank-card.this-bank .card-eyebrow { color: var(--cosmos); }
+    .bank-card.other-bank .card-eyebrow { color: var(--blue); }
+
+    .bank-card .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 19px;
+      font-weight: 500;
+      margin-bottom: 0.875rem;
+    }
+
+    .bank-card.this-bank .card-title { color: var(--cosmos); }
+    .bank-card.other-bank .card-title { color: var(--blue); }
+
+    .bank-prompts {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 0.875rem 0;
+      border-left: 2px solid var(--champagne);
+      padding-left: 0.75rem;
+    }
+
+    .bank-prompts li {
+      font-size: 13px;
+      color: var(--moss);
+      line-height: 1.6;
+      margin-bottom: 4px;
+    }
+
+    .bank-prompts li:last-child { margin-bottom: 0; }
+
+    .bank-card textarea {
+      width: 100%;
+      min-height: 200px;
+      font-size: 13px;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--olive);
+      background: var(--white);
+      border: 0.5px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem 0.875rem;
+      resize: vertical;
+      outline: none;
+      line-height: 1.7;
+      transition: border-color 0.15s;
+    }
+
+    .bank-card textarea:focus { border-color: var(--moss); }
+    .bank-card textarea::placeholder { color: #C4B8A8; font-style: italic; }
+
+    /* ── Stones column ── */
+    .stones-card {
+      background: var(--white);
+      border: 0.5px solid var(--blue);
+      border-radius: 12px;
+      padding: 1rem;
+    }
+
+    .stones-card .card-eyebrow {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 0.5rem;
+    }
+
+    .stones-card .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 19px;
+      font-weight: 500;
+      color: var(--blue);
+      margin-bottom: 0.75rem;
+    }
+
+    .stones-prompt {
+      font-size: 13px;
+      color: var(--moss);
+      border-left: 2px solid var(--champagne);
+      padding-left: 0.75rem;
+      margin-bottom: 1rem;
+      line-height: 1.5;
     }
 
     .stones-list {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
     .stone-row {
       display: flex;
       align-items: flex-start;
-      gap: 12px;
+      gap: 8px;
     }
 
-    .stone-number {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.1rem;
-      color: var(--moss);
-      padding-top: 14px;
+    .stone-dot {
       flex-shrink: 0;
-      width: 24px;
-      text-align: right;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 1px solid var(--blue);
+      background: var(--bone);
+      color: var(--blue);
+      font-size: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 4px;
     }
 
-    .stone-row input {
+    .stone-row textarea {
       flex: 1;
+      background: var(--bone);
+      border: 0.5px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--olive);
+      padding: 0.5rem 0.625rem;
+      resize: vertical;
+      outline: none;
+      min-height: 48px;
+      line-height: 1.6;
+      transition: border-color 0.15s;
+      width: 100%;
     }
+
+    .stone-row textarea:focus { border-color: var(--moss); }
+    .stone-row textarea::placeholder { color: #C4B8A8; font-style: italic; }
 
     .remove-stone-btn {
       background: none;
       border: none;
       cursor: pointer;
       color: var(--border);
-      font-size: 1.1rem;
-      padding: 12px 4px;
+      font-size: 1rem;
+      padding: 4px;
       transition: color 0.15s;
       flex-shrink: 0;
       line-height: 1;
+      margin-top: 6px;
     }
 
     .remove-stone-btn:hover { color: var(--coral); }
 
     .add-stone-btn {
       background: none;
-      border: 1px dashed var(--border);
-      border-radius: 3px;
-      color: var(--moss);
+      border: 0.5px dashed var(--blue);
+      border-radius: 6px;
+      color: var(--blue);
       font-family: 'DM Sans', sans-serif;
-      font-size: 0.875rem;
+      font-size: 12px;
       cursor: pointer;
-      padding: 10px 20px;
-      margin-top: 8px;
+      padding: 8px 12px;
+      margin-top: 10px;
       transition: all 0.15s;
       width: 100%;
     }
 
     .add-stone-btn:hover {
-      border-color: var(--moss);
-      background: rgba(125,119,79,0.05);
+      background: rgba(114,147,197,0.06);
     }
 
+    /* ── Submit button ── */
     .analyse-btn {
       display: block;
       width: 100%;
-      background: var(--cosmos);
+      background: var(--olive);
       color: var(--bone);
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.25rem;
-      font-weight: 400;
-      letter-spacing: 0.03em;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
       border: none;
-      border-radius: 4px;
-      padding: 20px 32px;
+      border-radius: 10px;
+      padding: 0.875rem;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: background 0.2s;
       margin-top: 8px;
     }
 
     .analyse-btn:hover:not(:disabled) {
-      background: #5a1a29;
+      background: var(--cosmos);
     }
 
     .analyse-btn:disabled {
@@ -237,47 +373,82 @@
       cursor: not-allowed;
     }
 
+    /* ── Validation / error ── */
     .inline-error {
       background: rgba(232,117,128,0.1);
       border: 1px solid rgba(232,117,128,0.3);
-      border-radius: 3px;
+      border-radius: 6px;
       padding: 12px 16px;
-      font-size: 0.875rem;
+      font-size: 13px;
       color: var(--cosmos);
       margin-top: 16px;
     }
 
+    .error-card {
+      background: rgba(232,117,128,0.08);
+      border: 0.5px solid rgba(232,117,128,0.25);
+      border-radius: 8px;
+      padding: 28px 32px;
+      text-align: center;
+      margin-top: 32px;
+    }
+
+    .error-card p {
+      color: var(--cosmos);
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .retry-btn {
+      background: none;
+      border: 0.5px solid var(--border);
+      border-radius: 6px;
+      color: var(--moss);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      cursor: pointer;
+      padding: 8px 18px;
+      margin-top: 10px;
+      transition: all 0.15s;
+    }
+
+    .retry-btn:hover {
+      border-color: var(--cosmos);
+      color: var(--cosmos);
+    }
+
+    /* ── Loading ── */
     .loading-state {
       text-align: center;
       padding: 64px 24px;
     }
 
     .loading-state .spinner {
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       border: 2px solid var(--border);
-      border-top-color: var(--cosmos);
+      border-top-color: var(--olive);
       border-radius: 50%;
       animation: spin 1s linear infinite;
-      margin: 0 auto 24px;
+      margin: 0 auto 20px;
     }
 
     @keyframes spin { to { transform: rotate(360deg); } }
 
     .loading-state h3 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       color: var(--cosmos);
       margin-bottom: 8px;
     }
 
     .loading-state p {
       color: var(--moss);
-      font-size: 0.9rem;
+      font-size: 13px;
       font-style: italic;
     }
 
-    /* Results */
+    /* ── Results ── */
     .results {
       margin-top: 48px;
     }
@@ -292,11 +463,11 @@
     }
 
     .result-card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 28px 32px;
-      margin-bottom: 20px;
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: 8px;
+      padding: 24px 28px;
+      margin-bottom: 16px;
     }
 
     .result-card.overall {
@@ -305,69 +476,31 @@
 
     .result-card-label {
       font-family: 'DM Sans', sans-serif;
-      font-size: 0.7rem;
+      font-size: 10px;
       font-weight: 500;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--moss);
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .result-card h3 {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       color: var(--cosmos);
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .result-card p {
-      font-size: 0.9375rem;
+      font-size: 14px;
       color: var(--olive);
       line-height: 1.7;
     }
-
-    .score-badge {
-      display: inline-block;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 4px 10px;
-      border-radius: 2px;
-      margin-bottom: 14px;
-    }
-
-    .score-badge.strong { background: rgba(125,119,79,0.15); color: var(--moss); }
-    .score-badge.needs-work { background: rgba(218,173,68,0.2); color: #8a6e1c; }
-    .score-badge.gap { background: rgba(232,117,128,0.2); color: #b8323e; }
-    .score-badge.expert-trap { background: rgba(70,20,32,0.1); color: var(--cosmos); }
-    .score-badge.leap { background: rgba(114,147,197,0.2); color: #3d6299; }
 
     .feedback-text {
-      font-size: 0.9375rem;
+      font-size: 14px;
       color: var(--olive);
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       line-height: 1.7;
-    }
-
-    .suggestion-box {
-      background: var(--bone);
-      border-left: 2px solid var(--gold);
-      padding: 12px 16px;
-      border-radius: 0 2px 2px 0;
-      font-size: 0.875rem;
-      color: var(--olive);
-      line-height: 1.6;
-      margin-top: 12px;
-    }
-
-    .suggestion-box strong {
-      display: block;
-      font-size: 0.7rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--moss);
-      margin-bottom: 6px;
     }
 
     .expert-traps-card {
@@ -375,11 +508,11 @@
     }
 
     .expert-trap-item {
-      background: rgba(232,117,128,0.1);
-      border-radius: 3px;
-      padding: 12px 16px;
-      margin-bottom: 10px;
-      font-size: 0.875rem;
+      background: rgba(232,117,128,0.08);
+      border-radius: 4px;
+      padding: 10px 14px;
+      margin-bottom: 8px;
+      font-size: 13px;
       color: var(--olive);
       line-height: 1.6;
     }
@@ -388,96 +521,63 @@
 
     .no-expert-traps {
       background: rgba(125,119,79,0.1);
-      border-radius: 3px;
-      padding: 12px 16px;
-      font-size: 0.875rem;
-      color: var(--moss);
-    }
-
-    .stone-result {
-      border-top: 1px solid var(--border);
-      padding-top: 20px;
-      margin-top: 20px;
-    }
-
-    .stone-result:first-child {
-      border-top: none;
-      padding-top: 0;
-      margin-top: 0;
-    }
-
-    .stone-num {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.1rem;
-      color: var(--moss);
-      margin-bottom: 8px;
-    }
-
-    .missing-stones-card {
-      background: rgba(218,173,68,0.1);
-      border: 1px solid rgba(218,173,68,0.3);
       border-radius: 4px;
-      padding: 28px 32px;
-      margin-bottom: 20px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: var(--moss);
     }
 
-    .missing-stones-card .result-card-label { color: #8a6e1c; }
-
-    /* Suggested river map */
-    .river-map-doc {
-      margin-bottom: 20px;
-    }
+    /* ── Suggested river map (results) ── */
+    .river-map-doc { margin-bottom: 20px; }
 
     .river-map-doc-heading {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       color: var(--cosmos);
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       padding-bottom: 12px;
       border-bottom: 1px solid var(--border);
     }
 
     .offer-promise-block {
       background: var(--olive);
-      border-radius: 4px;
-      padding: 24px 28px;
-      margin-bottom: 20px;
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
     }
 
     .offer-promise-block .result-card-label {
-      color: rgba(235,224,209,0.6);
+      color: rgba(235,224,209,0.5);
     }
 
     .offer-promise-block p {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       color: var(--bone);
       line-height: 1.6;
       font-weight: 400;
     }
 
-    .bank-section {
-      margin-bottom: 20px;
-    }
+    .bank-section { margin-bottom: 16px; }
 
     .bank-section-heading {
       font-family: 'DM Sans', sans-serif;
-      font-size: 0.7rem;
+      font-size: 10px;
       font-weight: 500;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .bank-section-heading.cosmos { color: var(--cosmos); }
     .bank-section-heading.blue { color: var(--blue); }
 
     .subsection-card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 20px 24px;
-      margin-bottom: 10px;
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 8px;
     }
 
     .subsection-card.cosmos-border { border-left: 4px solid var(--cosmos); }
@@ -485,12 +585,12 @@
 
     .subsection-label {
       font-family: 'DM Sans', sans-serif;
-      font-size: 0.68rem;
+      font-size: 10px;
       font-weight: 500;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--moss);
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .subsection-list {
@@ -500,114 +600,96 @@
     }
 
     .subsection-list li {
-      font-size: 0.9375rem;
+      font-size: 14px;
       color: var(--olive);
       line-height: 1.7;
-      padding: 4px 0;
-      border-bottom: 1px solid rgba(210,200,187,0.4);
+      padding: 3px 0;
+      border-bottom: 0.5px solid rgba(210,200,187,0.4);
     }
 
     .subsection-list li:last-child { border-bottom: none; }
 
     .core-problem-text {
-      font-size: 0.9375rem;
+      font-size: 14px;
       color: var(--olive);
       line-height: 1.7;
       font-style: italic;
     }
 
     .stones-result-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 4px;
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: 8px;
       overflow: hidden;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     .stone-result-row {
       display: flex;
       align-items: flex-start;
-      gap: 16px;
-      padding: 18px 24px;
-      border-bottom: 1px solid var(--border);
+      gap: 14px;
+      padding: 14px 20px;
+      border-bottom: 0.5px solid var(--border);
     }
 
     .stone-result-row:last-child { border-bottom: none; }
 
     .stone-result-num {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.1rem;
+      font-size: 1rem;
       color: var(--moss);
       flex-shrink: 0;
-      width: 20px;
+      width: 18px;
       padding-top: 2px;
       text-align: right;
     }
 
-    .stone-result-content {
-      flex: 1;
-    }
+    .stone-result-content { flex: 1; }
 
     .stone-result-belief {
-      font-size: 0.9375rem;
+      font-size: 14px;
       color: var(--olive);
       line-height: 1.65;
     }
 
     .stone-result-note {
-      font-size: 0.8rem;
+      font-size: 12px;
       color: var(--moss);
       line-height: 1.5;
-      margin-top: 6px;
+      margin-top: 4px;
       font-style: italic;
     }
 
-    .retry-btn {
-      background: none;
-      border: 1px solid var(--border);
-      border-radius: 3px;
-      color: var(--moss);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.875rem;
-      cursor: pointer;
-      padding: 10px 20px;
-      margin-top: 12px;
-      transition: all 0.15s;
-    }
-
-    .retry-btn:hover {
-      border-color: var(--cosmos);
-      color: var(--cosmos);
-    }
-
-    .error-card {
-      background: rgba(232,117,128,0.08);
-      border: 1px solid rgba(232,117,128,0.25);
-      border-radius: 4px;
-      padding: 28px 32px;
-      text-align: center;
-      margin-top: 32px;
-    }
-
-    .error-card p {
-      color: var(--cosmos);
-      margin-bottom: 8px;
-    }
-
+    /* ── Misc ── */
     .divider {
       border: none;
       border-top: 1px solid var(--border);
       margin: 40px 0;
     }
 
+    .reset-btn {
+      background: none;
+      border: 0.5px dashed var(--border);
+      border-radius: 6px;
+      color: var(--moss);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      cursor: pointer;
+      padding: 10px 20px;
+      transition: all 0.15s;
+      width: 100%;
+    }
+
+    .reset-btn:hover {
+      border-color: var(--moss);
+      background: rgba(125,119,79,0.05);
+    }
+
     .site-footer {
       text-align: center;
-      padding: 32px 24px;
+      padding: 28px 24px;
       border-top: 1px solid var(--border);
-      font-size: 0.8rem;
+      font-size: 12px;
       color: var(--moss);
     }
 
@@ -617,10 +699,9 @@
     }
 
     @media (max-width: 600px) {
-      .section-block { padding: 24px 20px; }
-      .result-card { padding: 20px; }
-      .top-priority-card { padding: 24px; }
-      .missing-stones-card { padding: 20px; }
+      .site-header { padding: 3rem 1.5rem; }
+      .site-header h1 { font-size: 38px; }
+      .result-card { padding: 16px 18px; }
     }
   </style>
 </head>
@@ -628,7 +709,7 @@
   <div id="root"></div>
 
   <script type="text/babel">
-    const { useState, useCallback, useEffect, useRef } = React;
+    const { useState, useEffect, useRef } = React;
 
     const STORAGE_KEY = 'rivermap_v1';
 
@@ -667,13 +748,11 @@
         <div className="results">
           <h2 className="results-heading">Your river map — analysed and rewritten</h2>
 
-          {/* Section 1 — Overall read */}
           <div className="result-card overall">
             <div className="result-card-label">Overall read</div>
             <p>{data.overallRead}</p>
           </div>
 
-          {/* Section 2 — Expert trap flags */}
           <div className="result-card expert-traps-card">
             <div className="result-card-label">Expert trap flags</div>
             <h3>Are you speaking from the other bank?</h3>
@@ -689,18 +768,15 @@
             )}
           </div>
 
-          {/* Section 3 — Suggested river map */}
           {map.offerPromise && (
             <div className="river-map-doc">
               <h3 className="river-map-doc-heading">Your rewritten river map</h3>
 
-              {/* Offer promise */}
               <div className="offer-promise-block">
                 <div className="result-card-label">Offer promise</div>
                 <p>{map.offerPromise}</p>
               </div>
 
-              {/* This bank */}
               <div className="bank-section">
                 <div className="bank-section-heading cosmos">This bank — who your cold person is right now</div>
                 <SubsectionCard label="What they believe" items={tb.beliefs} borderClass="cosmos-border" />
@@ -714,7 +790,6 @@
                 <SubsectionCard label="How this shows up in their day" items={tb.dailyExperience} borderClass="cosmos-border" />
               </div>
 
-              {/* Stepping stones */}
               {map.steppingStones && map.steppingStones.length > 0 && (
                 <div className="bank-section">
                   <div className="bank-section-heading cosmos">Stepping stones — the belief journey</div>
@@ -732,7 +807,6 @@
                 </div>
               )}
 
-              {/* Other bank */}
               <div className="bank-section">
                 <div className="bank-section-heading blue">The other bank — after working with you</div>
                 <SubsectionCard label="What they now believe" items={ob.beliefs} borderClass="blue-border" />
@@ -744,7 +818,7 @@
           )}
 
           <hr className="divider" />
-          <button className="add-stone-btn" onClick={onReset} style={{ marginTop: 0 }}>
+          <button className="reset-btn" onClick={onReset}>
             Start a new map
           </button>
         </div>
@@ -764,13 +838,11 @@
       const [validationError, setValidationError] = useState(null);
       const resultsRef = useRef(null);
 
-      // Persist to localStorage on change
       useEffect(() => {
         saveToDisk({ offerPromise, thisBank, otherBank, stones });
       }, [offerPromise, thisBank, otherBank, stones]);
 
       const filledStones = stones.filter(s => s.trim());
-      const canSubmit = offerPromise.trim() && thisBank.trim() && otherBank.trim() && filledStones.length >= 3;
 
       const addStone = () => setStones(prev => [...prev, '']);
 
@@ -850,85 +922,89 @@
       return (
         <>
           <header className="site-header">
-            <h1>The River Map</h1>
-            <p>Map the belief journey your cold prospect needs to take — then find out if it actually holds water.</p>
+            <div className="eyebrow">Regenerative Revenue — Retreat Tool</div>
+            <h1>The River <em>Crossing</em></h1>
+            <div className="header-divider"></div>
+            <p className="subtitle">Map the belief journey your cold connection needs to take — from where they are right now, to becoming a client.</p>
           </header>
 
           <main className="main">
-            {/* Section 1 */}
-            <div className="section-block">
-              <div className="section-number">Section 01</div>
-              <div className="section-label">The offer promise</div>
+
+            {/* Offer promise */}
+            <div className="offer-card">
+              <div className="card-eyebrow">The offer promise</div>
+              <div className="card-title">What do you deliver — and for whom?</div>
               <textarea
                 rows={4}
                 value={offerPromise}
                 onChange={e => setOfferPromise(e.target.value)}
-                placeholder="Who is this for, what do they walk away with, and what specifically changes — in 2 sentences or less. Be concrete. Avoid lofty language."
+                placeholder="Who is this for, what do they walk away with, and what specifically changes — in 2 sentences or less."
               />
             </div>
 
-            {/* Section 2 */}
-            <div className="section-block">
-              <div className="section-number">Section 02</div>
-              <div className="section-label">The current river bank — your cold connection right now</div>
-              <div className="embedded-prompts">
-                <p>What do they believe about their problem and about themselves?</p>
-                <p>How do they see themselves? What does their daily experience actually look like?</p>
-                <p>What are they quietly afraid is true? What have they tried that hasn't worked?</p>
-              </div>
-              <textarea
-                rows={8}
-                value={thisBank}
-                onChange={e => setThisBank(e.target.value)}
-                placeholder="Write what's true for them right now..."
-              />
-              <p className="field-instruction">Be specific. Name the belief, the fear, the Monday morning feeling. Avoid vague or aspirational language — stay on this bank.</p>
-            </div>
+            {/* Three-column river */}
+            <div className="river-grid">
 
-            {/* Section 3 */}
-            <div className="section-block">
-              <div className="section-number">Section 03</div>
-              <div className="section-label">The other river bank — where they are after working with you</div>
-              <div className="embedded-prompts">
-                <p>What do they now believe? How do they see themselves differently?</p>
-                <p>What do they have that they didn't have before?</p>
-                <p>What does a specific moment in their day or week look like now?</p>
+              {/* This bank */}
+              <div className="bank-card this-bank">
+                <div className="card-eyebrow">The current bank</div>
+                <div className="card-title">Your cold connection, right now</div>
+                <ul className="bank-prompts">
+                  <li>— What do they believe?</li>
+                  <li>— How do they see themselves?</li>
+                  <li>— What is their core problem?</li>
+                  <li>— How does this show up in their daily experience?</li>
+                </ul>
+                <textarea
+                  value={thisBank}
+                  onChange={e => setThisBank(e.target.value)}
+                  placeholder="Write what's true for them right now..."
+                />
               </div>
-              <textarea
-                rows={8}
-                value={otherBank}
-                onChange={e => setOtherBank(e.target.value)}
-                placeholder="Write what's true for them after working with you..."
-              />
-              <p className="field-instruction">Ground this in the direct result of your offer — not a 3 year life vision. What is specifically true for them after working with you?</p>
-            </div>
 
-            {/* Section 4 */}
-            <div className="section-block">
-              <div className="section-number">Section 04</div>
-              <div className="section-label">The stepping stones — the belief journey</div>
-              <p style={{ fontSize: '0.875rem', color: 'var(--moss)', marginBottom: '20px', fontStyle: 'italic' }}>
-                Each stone is a belief your cold person needs in place before the next one is available to them. Start with the first shift a cold person could make. End with the belief that makes saying yes feel inevitable.
-              </p>
-              <div className="stones-list">
-                {stones.map((stone, i) => (
-                  <div key={i} className="stone-row">
-                    <span className="stone-number">{i + 1}</span>
-                    <input
-                      type="text"
-                      value={stone}
-                      onChange={e => updateStone(i, e.target.value)}
-                      placeholder="e.g. Something needs to change — the low-grade dread isn't just a bad patch, this is structural."
-                    />
-                    {stones.length > 3 && (
-                      <button className="remove-stone-btn" onClick={() => removeStone(i)} title="Remove stone">×</button>
-                    )}
-                  </div>
-                ))}
+              {/* Stepping stones */}
+              <div className="stones-card">
+                <div className="card-eyebrow">The belief journey</div>
+                <div className="card-title">Stepping stones</div>
+                <p className="stones-prompt">What does your person need to believe to move from one side to the other?</p>
+                <div className="stones-list">
+                  {stones.map((stone, i) => (
+                    <div key={i} className="stone-row">
+                      <span className="stone-dot">{i + 1}</span>
+                      <textarea
+                        value={stone}
+                        onChange={e => updateStone(i, e.target.value)}
+                        placeholder="A belief shift…"
+                        rows={2}
+                      />
+                      {stones.length > 3 && (
+                        <button className="remove-stone-btn" onClick={() => removeStone(i)} title="Remove">×</button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                <button className="add-stone-btn" onClick={addStone}>
+                  + Add stone
+                </button>
               </div>
-              <button className="add-stone-btn" onClick={addStone}>
-                + Add another stone
-              </button>
+
+              {/* Other bank */}
+              <div className="bank-card other-bank">
+                <div className="card-eyebrow">The other bank</div>
+                <div className="card-title">After working with you</div>
+                <ul className="bank-prompts">
+                  <li>— What do they believe?</li>
+                  <li>— How do they see themselves?</li>
+                  <li>— What do they have now?</li>
+                  <li>— What looks different in their daily experience?</li>
+                </ul>
+                <textarea
+                  value={otherBank}
+                  onChange={e => setOtherBank(e.target.value)}
+                  placeholder="Write what's true for them after working with you..."
+                />
+              </div>
+
             </div>
 
             {/* Validation error */}
