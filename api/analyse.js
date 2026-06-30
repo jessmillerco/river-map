@@ -120,7 +120,7 @@ Respond in this exact JSON format with no markdown, no backticks, just raw JSON:
 }`;
 
   const abort = new AbortController();
-  const timeout = setTimeout(() => abort.abort(), 50000);
+  const timeout = setTimeout(() => abort.abort(), 100000);
 
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -133,7 +133,7 @@ Respond in this exact JSON format with no markdown, no backticks, just raw JSON:
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
-        max_tokens: 4000,
+        max_tokens: 2000,
         system: systemPrompt,
         messages: [
           { role: 'user', content: userMessage },
