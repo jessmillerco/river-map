@@ -119,9 +119,13 @@ Respond in this exact JSON format with no markdown, no backticks, just raw JSON:
   }
 }`;
 
+  const abort = new AbortController();
+  const timeout = setTimeout(() => abort.abort(), 50000);
+
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
+      signal: abort.signal,
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': apiKey,
@@ -172,7 +176,13 @@ Respond in this exact JSON format with no markdown, no backticks, just raw JSON:
 
     return res.status(200).json(parsed);
   } catch (err) {
+    if (err.name === 'AbortError') {
+      console.error('Anthropic request timed out');
+      return res.status(504).json({ error: 'The analysis took too long to complete. Please try again — it usually works on a second attempt.' });
+    }
     console.error('Handler error:', err);
     return res.status(500).json({ error: 'Something went wrong. Please try again.', _debug_error: err.message });
+  } finally {
+    clearTimeout(timeout);
   }
 }
