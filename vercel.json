@@ -1,12 +1,10 @@
 {
   "functions": {
     "api/analyse.js": {
-      "maxDuration": 60
+      "maxDuration": 120
     }
   },
   "rewrites": [
-    { "source": "/workbook", "destination": "/river-map-workbook.html" },
-    { "source": "/api/analyse", "destination": "/api/analyse.js" },
-    { "source": "/", "destination": "/index.html" }
+    { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
 }
