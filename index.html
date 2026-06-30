@@ -761,6 +761,80 @@
       .site-header h1 { font-size: 40px; }
       .result-card { padding: 16px 18px; }
     }
+
+    /* ── Print / PDF ── */
+    .results-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .print-btn {
+      display: block;
+      width: 100%;
+      background: none;
+      border: 0.5px solid var(--olive);
+      border-radius: 6px;
+      color: var(--olive);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      cursor: pointer;
+      padding: 10px 20px;
+      transition: all 0.15s;
+    }
+
+    .print-btn:hover {
+      background: var(--olive);
+      color: var(--bone);
+    }
+
+    @media print {
+      /* Hide everything interactive */
+      .analyse-btn, .reset-btn, .print-btn, .results-actions,
+      .add-stone-btn, .remove-stone-btn, .site-footer,
+      .inline-error, .error-card, .loading-state, .divider { display: none !important; }
+
+      /* Clean up page chrome */
+      body { background: white; font-size: 11pt; color: #000; }
+      .site-header { background: #323D27; padding: 1.5rem 2rem; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .site-header h1 { font-size: 32pt; }
+      .site-header .subtitle { font-size: 13pt; }
+      .main { padding: 1.5rem 2rem; max-width: 100%; }
+
+      /* Make textareas read like plain text */
+      textarea {
+        border: none !important;
+        background: transparent !important;
+        resize: none !important;
+        padding: 0 !important;
+        font-size: 11pt !important;
+        color: #000 !important;
+        height: auto !important;
+        min-height: unset !important;
+        overflow: visible !important;
+      }
+
+      /* Input cards */
+      .offer-card { background: #323D27; -webkit-print-color-adjust: exact; print-color-adjust: exact; border-radius: 6pt; padding: 1rem; margin-bottom: 1rem; }
+      .bank-card, .stones-card { border: 0.5pt solid #D2C8BB; border-radius: 6pt; padding: 1rem; break-inside: avoid; }
+      .river-grid { gap: 10pt; margin-bottom: 1rem; }
+
+      /* Results */
+      .result-card { break-inside: avoid; border: 0.5pt solid #D2C8BB; }
+      .offer-promise-block { background: #323D27; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .result-bank-card, .stones-result-card, .subsection-card { break-inside: avoid; }
+      .results-banks-grid { gap: 10pt; }
+
+      /* Coloured accents */
+      .result-card.overall { border-left: 3pt solid #461420; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .expert-traps-card { border-left: 3pt solid #E87580; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .result-bank-card.cosmos-bank { border-top: 2pt solid #461420; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .result-bank-card.blue-bank { border-top: 2pt solid #7293C5; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+      /* Page breaks */
+      .results { page-break-before: always; }
+      .river-map-doc { page-break-before: auto; }
+    }
   </style>
 </head>
 <body>
@@ -884,9 +958,14 @@
           )}
 
           <hr className="divider" />
-          <button className="reset-btn" onClick={onReset}>
-            Start a new map
-          </button>
+          <div className="results-actions">
+            <button className="print-btn" onClick={() => window.print()}>
+              Print / Save as PDF
+            </button>
+            <button className="reset-btn" onClick={onReset}>
+              Start a new map
+            </button>
+          </div>
         </div>
       );
     }
