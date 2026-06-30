@@ -698,9 +698,27 @@ textarea::placeholder { color: #C4B8A8; font-style: italic; }
 }
 
 .print-btn:hover { background: rgba(235,224,209,0.1); }
+
+#save-indicator {
+  position: fixed;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  background: var(--olive);
+  color: var(--champagne);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  padding: 0.4rem 0.875rem;
+  border-radius: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 100;
+}
 </style>
 </head>
 <body>
+
+<div id="save-indicator">Saved</div>
 
 <div class="cover">
   <p class="cover-eyebrow">Regenerative Revenue — Retreat Workbook</p>
@@ -913,11 +931,85 @@ textarea::placeholder { color: #C4B8A8; font-style: italic; }
 </div>
 
 <script>
+const SAVE_KEY = 'river-map-workbook';
 let stoneCount = 0;
 let stoneBlockCount = 0;
 let emailCounts = {};
+let saveTimer = null;
 
-function addStone() {
+// ── Save indicator ──────────────────────────────────────────────
+function showSaved() {
+  const el = document.getElementById('save-indicator');
+  el.textContent = 'Saved';
+  el.style.opacity = '1';
+  clearTimeout(el._fadeTimer);
+  el._fadeTimer = setTimeout(() => { el.style.opacity = '0'; }, 2000);
+}
+
+// ── Collect all current values ──────────────────────────────────
+function collectState() {
+  const state = { stones: stoneCount, stoneBlocks: stoneBlockCount, emailCounts: {}, fields: {} };
+
+  // Plain inputs / textareas (static parts of the page)
+  document.querySelectorAll('input[type="text"], textarea').forEach((el, i) => {
+    if (!el.dataset.sid) el.dataset.sid = 'f' + i;
+    state.fields[el.dataset.sid] = el.value;
+  });
+
+  // Radio buttons
+  document.querySelectorAll('input[type="radio"]').forEach(el => {
+    if (el.checked) state.fields['radio__' + el.name] = el.id;
+  });
+
+  state.emailCounts = { ...emailCounts };
+  return state;
+}
+
+// ── Restore a saved state ───────────────────────────────────────
+function restoreState(state) {
+  // Rebuild dynamic stones
+  const extraStones = state.stones - 5;
+  for (let i = 0; i < extraStones; i++) addStone(true);
+
+  // Rebuild dynamic stone blocks (default 3 already built)
+  const extraBlocks = state.stoneBlocks - 3;
+  for (let i = 0; i < extraBlocks; i++) addStoneBlock(true);
+
+  // Restore extra emails per stone block
+  Object.entries(state.emailCounts).forEach(([id, count]) => {
+    const current = emailCounts[id] || 0;
+    for (let i = current; i < count; i++) addEmailToStone(id, true);
+  });
+
+  // Restore field values
+  document.querySelectorAll('input[type="text"], textarea').forEach((el, i) => {
+    if (!el.dataset.sid) el.dataset.sid = 'f' + i;
+    if (state.fields[el.dataset.sid] !== undefined) el.value = state.fields[el.dataset.sid];
+  });
+
+  // Restore radio buttons
+  Object.entries(state.fields).forEach(([key, val]) => {
+    if (key.startsWith('radio__')) {
+      const el = document.getElementById(val);
+      if (el) el.checked = true;
+    }
+  });
+}
+
+// ── Auto-save on input (debounced 500ms) ───────────────────────
+function scheduleSave() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    localStorage.setItem(SAVE_KEY, JSON.stringify(collectState()));
+    showSaved();
+  }, 500);
+}
+
+document.addEventListener('input', scheduleSave);
+document.addEventListener('change', scheduleSave);
+
+// ── Dynamic content builders ────────────────────────────────────
+function addStone(silent = false) {
   stoneCount++;
   const container = document.getElementById('stones-container');
   const div = document.createElement('div');
@@ -927,9 +1019,10 @@ function addStone() {
     <textarea class="stone-input" placeholder="Name the belief in your cold person's own voice"></textarea>
   `;
   container.appendChild(div);
+  if (!silent) scheduleSave();
 }
 
-function addStoneBlock() {
+function addStoneBlock(silent = false) {
   stoneBlockCount++;
   const id = 'sb' + stoneBlockCount;
   emailCounts[id] = 0;
@@ -937,7 +1030,6 @@ function addStoneBlock() {
 
   const div = document.createElement('div');
   div.style.marginBottom = '0';
-
   div.innerHTML = `
     <div class="stone-block">
       <div class="stone-block-inner">
@@ -961,12 +1053,11 @@ function addStoneBlock() {
       <div style="flex:1; height:1px; background:var(--border);"></div>
     </div>
   `;
-
   container.appendChild(div);
-  addEmailToStone(id);
+  if (!silent) scheduleSave();
 }
 
-function addEmailToStone(stoneId) {
+function addEmailToStone(stoneId, silent = false) {
   emailCounts[stoneId] = (emailCounts[stoneId] || 0) + 1;
   const count = emailCounts[stoneId];
   const uid = stoneId + 'e' + count;
@@ -986,11 +1077,18 @@ function addEmailToStone(stoneId) {
     <textarea placeholder="What is this email's brief — what does it need to make your person feel, think, or do? What mechanism? (story / reframe / exercise / case study / video / tool)" style="min-height:70px; font-size:15px;"></textarea>
   `;
   container.appendChild(div);
+  if (!silent) scheduleSave();
 }
 
-// Initialise
-for (let i = 0; i < 5; i++) addStone();
-for (let i = 0; i < 3; i++) addStoneBlock();
+// ── Boot ────────────────────────────────────────────────────────
+// Build defaults first, then restore saved state on top
+for (let i = 0; i < 5; i++) addStone(true);
+for (let i = 0; i < 3; i++) addStoneBlock(true);
+
+const saved = localStorage.getItem(SAVE_KEY);
+if (saved) {
+  try { restoreState(JSON.parse(saved)); } catch(e) { console.warn('Could not restore workbook:', e); }
+}
 </script>
 
 </body>
